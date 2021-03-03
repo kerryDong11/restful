@@ -9,10 +9,14 @@ from router.Status import Success
 
 class User(Resource):
     def get(self, user_id):
+        print (user_id)
         user = UserModel.query.filter_by(username=user_id).first()
         if user:
             return user.to_dict()
         return {'message': 'User not found'}, 404
+
+    # def get(self,user_id):
+    #     return ''
 
 
 
@@ -22,13 +26,12 @@ class UserList(Resource):
         return {'users': [user.to_dict() for user in UserModel.query.all()]}
     
     def post(self):
-        # 查询该国家是否存在于数据库中
-        #print(json.load(request.json))
+
+
         user = UserModel()
         user = user.from_dict(request.json)
         #print(user.u_email)
         db.session.add(user)
         db.session.commit()
         return Success.message, Success.code
-
 
